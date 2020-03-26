@@ -19,6 +19,8 @@ declare module 'react-native-beacons-manager' {
     // iOS only
     ///////////////////////////////////////////////////////
 
+    manualInitialization(): void;
+
     requestAlwaysAuthorization(): void;
 
     requestWhenInUseAuthorization(): void;
