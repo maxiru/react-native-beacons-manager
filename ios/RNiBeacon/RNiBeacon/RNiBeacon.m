@@ -41,16 +41,14 @@ RCT_EXPORT_MODULE()
 - (instancetype)init
 {
   if (SYSTEM_VERSION_LESS_THAN(@"13.0")) {
-    if (self = [super init]) {
-      self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager = [[CLLocationManager alloc] init];
 
-      self.locationManager.delegate = self;
-      self.locationManager.pausesLocationUpdatesAutomatically = NO;
-      self.dropEmptyRanges = NO;
-        
-      self.eddyStoneScanner = [[ESSBeaconScanner alloc] init];
-      self.eddyStoneScanner.delegate = self;
-    }
+    self.locationManager.delegate = self;
+    self.locationManager.pausesLocationUpdatesAutomatically = NO;
+    self.dropEmptyRanges = NO;
+      
+    self.eddyStoneScanner = [[ESSBeaconScanner alloc] init];
+    self.eddyStoneScanner.delegate = self;
   }
   return self;
 }
@@ -234,6 +232,14 @@ RCT_EXPORT_METHOD(getMonitoredRegions:(RCTResponseSenderBlock)callback)
   }
 
   callback(@[regionArray]);
+}
+
+RCT_EXPORT_METHOD(removeAllMonitoredRegions)
+{
+  if (!self.locationManager) return;
+  for (CLBeaconRegion *region in self.locationManager.monitoredRegions) {
+      [self.locationManager stopMonitoringForRegion:region];
+  }
 }
 
 RCT_EXPORT_METHOD(startMonitoringForRegion:(NSDictionary *) dict)
